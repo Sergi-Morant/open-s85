@@ -59,9 +59,14 @@ s85 clock                        # set the screen clock to local time
 
 ## How it works
 
-See [docs/PROTOCOL.md](docs/PROTOCOL.md). The protocol was worked out from USB captures and by
-studying how the official app communicates with the keyboard, solely for interoperability. This
-repository contains no code, images or other assets from the official software.
+* [docs/PROTOCOL.md](docs/PROTOCOL.md) — the USB protocol.
+* [docs/REVERSE-ENGINEERING.md](docs/REVERSE-ENGINEERING.md) — how it was worked out, step by step,
+  with the open questions and how to support another RK model.
+* [tools/](tools) — the capture decoders and generators used (Python 3, need Wireshark's `tshark`).
+
+The protocol was worked out from USB captures and by studying how the official app communicates
+with the keyboard, solely for interoperability. This repository contains no code, images or other
+assets from the official software.
 
 ## License
 

@@ -4,6 +4,9 @@ Observed from the keyboard's USB traffic and from studying how the official Wind
 for interoperability. Everything here was verified against real hardware (RK S85 ISO, `258a:01fa`,
 wired mode) unless marked *unverified*.
 
+How this was worked out, the tools used, and how to settle each *unverified* item:
+[REVERSE-ENGINEERING.md](REVERSE-ENGINEERING.md) (see "Open questions").
+
 ## Transport
 
 * USB HID, vendor collection **usage page `0xFF02`, usage `0x02`** on interface 1.
