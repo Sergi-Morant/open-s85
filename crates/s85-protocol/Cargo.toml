@@ -1,0 +1,12 @@
+[package]
+name = "s85-protocol"
+description = "USB HID protocol for the Royal Kludge RK S85 keyboard (unofficial)"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+repository.workspace = true
+
+[dependencies]
+hidapi.workspace = true
+image.workspace = true
+thiserror.workspace = true

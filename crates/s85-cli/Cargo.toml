@@ -1,0 +1,17 @@
+[package]
+name = "s85-cli"
+description = "Command-line tool for the Royal Kludge RK S85 keyboard (unofficial)"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+repository.workspace = true
+
+[[bin]]
+name = "s85"
+path = "src/main.rs"
+
+[dependencies]
+s85-protocol.workspace = true
+clap.workspace = true
+anyhow.workspace = true
+chrono = "0.4"

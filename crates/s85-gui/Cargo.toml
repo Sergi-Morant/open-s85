@@ -1,0 +1,21 @@
+[package]
+name = "s85-gui"
+description = "Desktop app for the Royal Kludge RK S85 keyboard (unofficial)"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+repository.workspace = true
+
+[[bin]]
+name = "open-s85"
+path = "src/main.rs"
+
+[dependencies]
+s85-protocol.workspace = true
+anyhow.workspace = true
+eframe = "0.37"
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+directories = "6"
+rfd = "0.17"
+chrono = "0.4"

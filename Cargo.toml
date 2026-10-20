@@ -1,0 +1,17 @@
+[workspace]
+resolver = "2"
+members = ["crates/s85-protocol", "crates/s85-cli", "crates/s85-gui"]
+
+[workspace.package]
+version = "0.1.0"
+edition = "2021"
+license = "MIT"
+repository = "https://github.com/Sergi-Morant/open-s85"
+
+[workspace.dependencies]
+s85-protocol = { path = "crates/s85-protocol" }
+hidapi = "2"
+image = { version = "0.25", default-features = false, features = ["gif", "png", "jpeg", "bmp", "webp"] }
+thiserror = "2"
+clap = { version = "4", features = ["derive"] }
+anyhow = "1"

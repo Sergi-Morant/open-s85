@@ -1,0 +1,4 @@
+# Let logged-in users access the RK S85 without root.
+# Install: sudo cp 99-rk-s85.rules /etc/udev/rules.d/ && sudo udevadm control --reload && sudo udevadm trigger
+KERNEL=="hidraw*", ATTRS{idVendor}=="258a", ATTRS{idProduct}=="01fa", TAG+="uaccess"
+KERNEL=="hidraw*", ATTRS{idVendor}=="258a", ATTRS{idProduct}=="0193", TAG+="uaccess"
