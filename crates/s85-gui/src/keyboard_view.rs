@@ -26,29 +26,55 @@ pub fn show(ui: &mut egui::Ui, selected: &[u8], look: impl Fn(&KeyDef) -> KeyLoo
     let origin = resp.rect.min;
     let map = |x: u16, y: u16| origin + Vec2::new(x as f32, y as f32) * scale;
 
-    painter.rect_filled(resp.rect, CornerRadius::same(10), theme::CASE);
+    painter.rect_filled(resp.rect, CornerRadius::same(14), theme::CASE);
+    painter.rect_stroke(resp.rect, CornerRadius::same(14), Stroke::new(1.0, theme::BORDER), StrokeKind::Inside);
     // Screen and knob area, top right, as on the real board.
     let screen = Rect::from_min_max(map(648, 22), map(712, 56));
-    painter.rect_filled(screen, CornerRadius::same(4), Color32::from_rgb(20, 20, 24));
-    painter.text(screen.center(), egui::Align2::CENTER_CENTER, "TFT", FontId::proportional(10.0 * scale), theme::DIM);
+    painter.rect_filled(screen, CornerRadius::same(4), Color32::from_rgb(8, 8, 10));
+    painter.text(
+        screen.center(),
+        egui::Align2::CENTER_CENTER,
+        crate::icons::MONITOR,
+        FontId::proportional(14.0 * scale),
+        theme::DIM,
+    );
 
     let mut clicked = None;
     let pointer = resp.interact_pointer_pos().filter(|_| resp.clicked());
     let hover = resp.hover_pos();
+    if hover.is_some_and(|p| {
+        KEYS.iter().any(|k| Rect::from_min_max(map(k.rect.0, k.rect.1), map(k.rect.2, k.rect.3)).contains(p))
+    }) {
+        ui.ctx().set_cursor_icon(egui::CursorIcon::PointingHand);
+    }
     for k in KEYS {
         let (x1, y1, x2, y2) = k.rect;
         let r = Rect::from_min_max(map(x1, y1), map(x2, y2));
         let l = look(k);
         let is_sel = selected.contains(&k.slot);
         let hovered = hover.is_some_and(|p| r.contains(p));
-        let fill = l.fill.unwrap_or(if is_sel { theme::ACCENT } else if hovered { theme::KEY_HOVER } else { theme::KEY });
+        let fill = l.fill.unwrap_or(if is_sel {
+            theme::ACCENT
+        } else if hovered {
+            theme::KEY_HOVER
+        } else {
+            theme::KEY
+        });
         let round = if k.label == "Wheel" { CornerRadius::same(255) } else { CornerRadius::same(4) };
         painter.rect_filled(r, round, fill);
-        let stroke = if l.changed { Stroke::new(1.5, theme::CHANGED) } else { Stroke::new(1.0, theme::KEY_EDGE) };
+        let stroke = if l.changed { Stroke::new(2.0, theme::CHANGED) } else { Stroke::new(1.0, theme::KEY_EDGE) };
         painter.rect_stroke(r, round, stroke, StrokeKind::Inside);
         let size = (if l.text.chars().count() > 4 { 8.0 } else { 10.0 }) * scale.max(0.8);
         let color = if is_sel {
-            Color32::BLACK
+            Color32::WHITE
+        } else if let Some(f) = l.fill {
+            // Dark legend on bright backlight colours, light legend on dark ones.
+            let luma = 0.299 * f.r() as f32 + 0.587 * f.g() as f32 + 0.114 * f.b() as f32;
+            if luma > 140.0 {
+                Color32::from_rgb(20, 20, 24)
+            } else {
+                Color32::WHITE
+            }
         } else if l.dim {
             theme::DIM
         } else {

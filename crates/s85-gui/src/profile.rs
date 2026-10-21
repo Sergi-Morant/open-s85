@@ -64,7 +64,7 @@ impl Default for Store {
     }
 }
 
-fn path() -> Option<PathBuf> {
+pub fn path() -> Option<PathBuf> {
     directories::ProjectDirs::from("", "", "open-s85").map(|d| d.config_dir().join("profiles.json"))
 }
 
