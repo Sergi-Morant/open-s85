@@ -47,7 +47,7 @@ jobs:
             target/release/open-s85.exe
             target/release/s85
             target/release/s85.exe
-            packaging/linux/99-rk-s85.rules
+            packaging/linux/70-rk-s85.rules
           if-no-files-found: ignore
       # ---- Installers and archives (every push; the release job below publishes them for tags) ----
       - name: Install cargo-packager
@@ -105,7 +105,7 @@ jobs:
             cp target/universal/open-s85 target/universal/s85 "$name/"
             tar czf "$name.tar.gz" "$name"
           else
-            cp target/release/open-s85 target/release/s85 packaging/linux/99-rk-s85.rules "$name/"
+            cp target/release/open-s85 target/release/s85 packaging/linux/70-rk-s85.rules "$name/"
             tar czf "$name.tar.gz" "$name"
           fi
       - uses: actions/upload-artifact@v4

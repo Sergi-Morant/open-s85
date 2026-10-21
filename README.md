@@ -56,9 +56,12 @@ polls the keyboard and will also re-send its own saved key mapping.
 Allow non-root access, then replug the keyboard:
 
 ```sh
-sudo cp packaging/linux/99-rk-s85.rules /etc/udev/rules.d/
+sudo cp packaging/linux/70-rk-s85.rules /etc/udev/rules.d/
 sudo udevadm control --reload && sudo udevadm trigger
 ```
+
+If you installed `99-rk-s85.rules` from 0.2.1 or earlier, it never took effect; delete it
+(`sudo rm /etc/udev/rules.d/99-rk-s85.rules`) and install `70-rk-s85.rules` as above.
 
 Build dependencies (Debian/Ubuntu): `libudev-dev libgtk-3-dev libxkbcommon-dev libwayland-dev`.
 
