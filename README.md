@@ -7,15 +7,19 @@ An open-source, cross-platform replacement for the Royal Kludge configuration so
 
 ## Features
 
-* **Key mapping** on the Default and FN1 layers (FN2 and Tap too), with media keys and modifiers.
-  Refuses to remove your last Fn key.
-* **Lighting**: all 17 built-in effects, brightness, speed, colour, custom RGB colour, colour mixing.
-* **Screen**: upload any image or animated GIF (resized and cropped for you), sync the clock.
+* **Key mapping** on the Default and FN1 layers (FN2 and Tap too), with media keys and modifiers
+  and a searchable function picker. Refuses to remove your last Fn key.
+* **Lighting**: all 17 built-in effects, brightness, speed, colour mixing, and a colour panel like
+  the official app's (hue ring, R/G/B sliders, hex code, presets).
+* **Screen**: drag and drop any image or animated GIF, preview the animation, upload it (resized
+  and cropped for you), sync the clock.
 * **Wireless sleep time.**
 * **Profiles**, stored locally (the keyboard cannot report its key mapping, so the app keeps it).
 * A command-line tool, `s85`, for scripting.
 
 Not supported (yet): macros, the PC-driven "real-time" and music lighting effects, per-key colours.
+
+See [CHANGELOG.md](CHANGELOG.md) for what changed in each version.
 
 ## Install
 
@@ -45,6 +49,13 @@ Build dependencies (Debian/Ubuntu): `libudev-dev libgtk-3-dev libxkbcommon-dev l
 
 If macOS asks for **Input Monitoring** permission, allow it for the app (or your terminal).
 
+Builds from the Actions tab are unsigned and lose their executable bit in the zip. After unzipping:
+
+```sh
+chmod +x open-s85 s85
+xattr -d com.apple.quarantine open-s85 s85   # only if macOS refuses to open them
+```
+
 ## Command line
 
 ```sh
@@ -70,4 +81,5 @@ assets from the official software.
 
 ## License
 
-MIT
+MIT. The bundled icon font (`crates/s85-gui/assets/Phosphor.ttf`) is from
+[Phosphor Icons](https://phosphoricons.com), also MIT.
