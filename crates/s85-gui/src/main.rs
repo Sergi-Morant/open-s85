@@ -27,12 +27,16 @@ use worker::{Event, Job, Worker};
 const IMAGE_EXTS: [&str; 6] = ["gif", "png", "jpg", "jpeg", "bmp", "webp"];
 
 fn main() -> eframe::Result<()> {
+    let mut viewport = egui::ViewportBuilder::default()
+        .with_title("Open S85")
+        .with_inner_size([1280.0, 820.0])
+        .with_min_inner_size([980.0, 640.0])
+        .with_drag_and_drop(true);
+    if let Ok(icon) = eframe::icon_data::from_png_bytes(include_bytes!("../assets/icons/256x256.png")) {
+        viewport = viewport.with_icon(icon);
+    }
     let options = eframe::NativeOptions {
-        viewport: egui::ViewportBuilder::default()
-            .with_title("Open S85")
-            .with_inner_size([1280.0, 820.0])
-            .with_min_inner_size([980.0, 640.0])
-            .with_drag_and_drop(true),
+        viewport,
         ..Default::default()
     };
     eframe::run_native("Open S85", options, Box::new(|cc| Ok(Box::new(App::new(cc)))))

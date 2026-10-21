@@ -23,13 +23,30 @@ See [CHANGELOG.md](CHANGELOG.md) for what changed in each version.
 
 ## Install
 
-Download a build from the [Actions](../../actions) tab, or build from source:
+Download the latest version from [Releases](../../releases):
+
+| Platform | Download |
+|---|---|
+| Windows | `…-windows-x86_64-setup.exe` (installer) or `…-windows-x86_64.zip` |
+| macOS (Apple Silicon and Intel) | `…-macos-universal.dmg` (open it, drag Open S85 to Applications) or `…-macos-universal.tar.gz` |
+| Linux | `…-linux-x86_64.tar.gz` |
+
+The installers are not code-signed, so the first launch shows a warning:
+
+* **Windows:** "Windows protected your PC" → **More info** → **Run anyway**.
+* **macOS:** "Apple could not verify…" → **System Settings → Privacy & Security** → **Open Anyway**.
+
+Or build from source:
 
 ```sh
 cargo build --release
 # GUI:  target/release/open-s85
 # CLI:  target/release/s85
 ```
+
+To build the installers yourself, install [cargo-packager](https://github.com/crabnebula-dev/cargo-packager)
+(`cargo install cargo-packager --locked`), then run `cargo packager --release` in `crates/s85-gui`
+after the build. `.github/workflows/ci.yml` shows the exact steps, including the universal macOS build.
 
 The keyboard must be connected **by USB cable** (wired mode). Close the official app first: it
 polls the keyboard and will also re-send its own saved key mapping.
@@ -49,7 +66,7 @@ Build dependencies (Debian/Ubuntu): `libudev-dev libgtk-3-dev libxkbcommon-dev l
 
 If macOS asks for **Input Monitoring** permission, allow it for the app (or your terminal).
 
-Builds from the Actions tab are unsigned and lose their executable bit in the zip. After unzipping:
+Builds from the Actions tab (not Releases) lose their executable bit in the zip. After unzipping:
 
 ```sh
 chmod +x open-s85 s85
@@ -82,4 +99,5 @@ assets from the official software.
 ## License
 
 MIT. The bundled icon font (`crates/s85-gui/assets/Phosphor.ttf`) is from
-[Phosphor Icons](https://phosphoricons.com), also MIT.
+[Phosphor Icons](https://phosphoricons.com), also MIT. The app icon is `crates/s85-gui/assets/icon.svg`;
+`python tools/make_icons.py` regenerates the PNG and `.ico` files from it.

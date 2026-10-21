@@ -1,5 +1,17 @@
 # Changelog
 
+## 0.3.0 — 2026-10-21
+
+Installers and an app icon. The app itself works the same as 0.2.0.
+
+* **App icon** based on the S85: cream case, lavender and navy keys, the clock screen, the silver
+  knob and the RGB glow. Shown in the window, the taskbar/Dock and on the Windows `.exe`.
+* **macOS:** `Open S85.app` in a `.dmg` (drag it to Applications). Universal build that runs on
+  Apple Silicon and Intel Macs, as is the `.tar.gz` download.
+* **Windows:** a setup `.exe` that installs for the current user (no administrator rights needed),
+  adds Start menu and desktop shortcuts, and appears in "Add or remove programs" with an uninstaller.
+* The `.zip`/`.tar.gz` downloads are still available for those who prefer no installer.
+
 ## 0.2.0 — 2026-10-21
 
 A redesigned desktop app. The keyboard protocol and the command-line tool are unchanged.

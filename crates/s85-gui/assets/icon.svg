@@ -1,0 +1,90 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1024" height="1024" viewBox="0 0 1024 1024">
+  <!-- Open S85 app icon: the corner of an RK S85 (cream case, lavender/navy caps, clock screen,
+       silver knob, RGB underglow) on a navy tile. Rendered to PNG/ICO/ICNS by tools/make_icons.py. -->
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#343a72"/>
+      <stop offset="1" stop-color="#151931"/>
+    </linearGradient>
+    <linearGradient id="rgb" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#3fe0ff"/>
+      <stop offset="0.25" stop-color="#5dff8a"/>
+      <stop offset="0.5" stop-color="#ffd23f"/>
+      <stop offset="0.72" stop-color="#ff8a3d"/>
+      <stop offset="1" stop-color="#ff4fd8"/>
+    </linearGradient>
+    <linearGradient id="plate" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#fdfaf3"/>
+      <stop offset="1" stop-color="#e6dfd0"/>
+    </linearGradient>
+    <radialGradient id="knob" cx="0.38" cy="0.32" r="0.75">
+      <stop offset="0" stop-color="#ffffff"/>
+      <stop offset="0.45" stop-color="#d7dbe2"/>
+      <stop offset="1" stop-color="#7d838f"/>
+    </radialGradient>
+    <linearGradient id="screen" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#151926"/>
+      <stop offset="1" stop-color="#07080d"/>
+    </linearGradient>
+    <filter id="glow" x="-30%" y="-30%" width="160%" height="160%">
+      <feGaussianBlur stdDeviation="22"/>
+    </filter>
+    <filter id="soft" x="-30%" y="-30%" width="160%" height="160%">
+      <feGaussianBlur stdDeviation="6"/>
+    </filter>
+    <filter id="tileShadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur stdDeviation="14"/>
+    </filter>
+  </defs>
+
+  <!-- Tile (macOS icon grid: 824 px body, 100 px margin) -->
+  <rect x="100" y="114" width="824" height="824" rx="185" fill="#000" opacity="0.35" filter="url(#tileShadow)"/>
+  <rect x="100" y="100" width="824" height="824" rx="185" fill="url(#bg)"/>
+
+  <!-- RGB underglow -->
+  <rect x="160" y="300" width="704" height="490" rx="60" fill="none" stroke="url(#rgb)" stroke-width="34" filter="url(#glow)" opacity="0.95"/>
+
+  <!-- Case: edge, then top surface -->
+  <rect x="170" y="316" width="684" height="470" rx="56" fill="#bfb6a3"/>
+  <rect x="170" y="300" width="684" height="470" rx="56" fill="url(#plate)"/>
+
+  <!-- Screen with clock -->
+  <rect x="214" y="344" width="380" height="172" rx="24" fill="url(#screen)"/>
+  <rect x="240" y="364" width="96" height="12" rx="6" fill="#4b5a80"/>
+  <rect x="528" y="362" width="40" height="17" rx="4" fill="#3fd16a"/>
+  <text x="404" y="482" text-anchor="middle" font-family="Consolas, 'DejaVu Sans Mono', monospace" font-weight="700" font-size="96" fill="#eaf6ff">09:00</text>
+
+  <!-- Knob -->
+  <circle cx="726" cy="440" r="84" fill="#000" opacity="0.28" filter="url(#soft)"/>
+  <circle cx="724" cy="430" r="82" fill="url(#knob)"/>
+  <circle cx="724" cy="430" r="82" fill="none" stroke="#666c78" stroke-width="5"/>
+  <circle cx="724" cy="430" r="58" fill="none" stroke="#ffffff" stroke-width="2" opacity="0.5"/>
+  <circle cx="724" cy="430" r="36" fill="none" stroke="#ffffff" stroke-width="2" opacity="0.4"/>
+
+  <!-- Light between the key rows -->
+  <rect x="214" y="640" width="596" height="10" rx="5" fill="url(#rgb)" filter="url(#soft)" opacity="0.85"/>
+
+  <!-- Keys, row 1: side (darker) then top face -->
+  <g>
+    <rect x="214" y="564" width="104" height="78" rx="16" fill="#5a5ea3"/>
+    <rect x="214" y="554" width="104" height="78" rx="16" fill="#8287cf"/>
+    <rect x="337" y="564" width="104" height="78" rx="16" fill="#5a5ea3"/>
+    <rect x="337" y="554" width="104" height="78" rx="16" fill="#8287cf"/>
+    <rect x="460" y="564" width="104" height="78" rx="16" fill="#5a5ea3"/>
+    <rect x="460" y="554" width="104" height="78" rx="16" fill="#8287cf"/>
+    <rect x="583" y="564" width="104" height="78" rx="16" fill="#c9c1ae"/>
+    <rect x="583" y="554" width="104" height="78" rx="16" fill="#f7f3ea"/>
+    <rect x="706" y="564" width="104" height="78" rx="16" fill="#1d2248"/>
+    <rect x="706" y="554" width="104" height="78" rx="16" fill="#2f3670"/>
+  </g>
+  <!-- Keys, row 2 -->
+  <g>
+    <rect x="214" y="666" width="104" height="78" rx="16" fill="#c9c1ae"/>
+    <rect x="214" y="656" width="104" height="78" rx="16" fill="#f7f3ea"/>
+    <rect x="337" y="666" width="350" height="78" rx="16" fill="#1d2248"/>
+    <rect x="337" y="656" width="350" height="78" rx="16" fill="#2f3670"/>
+    <rect x="482" y="690" width="60" height="7" rx="3.5" fill="#eaf0ff" opacity="0.85"/>
+    <rect x="706" y="666" width="104" height="78" rx="16" fill="#5a5ea3"/>
+    <rect x="706" y="656" width="104" height="78" rx="16" fill="#8287cf"/>
+  </g>
+</svg>

@@ -16,10 +16,14 @@ jobs:
         include:
           - os: ubuntu-latest
             platform: linux-x86_64
+            release: linux-x86_64
           - os: windows-latest
             platform: windows-x86_64
+            release: windows-x86_64
+          # Releases ship a universal (Apple Silicon + Intel) build; branch builds are arm64 only.
           - os: macos-latest
             platform: macos-arm64
+            release: macos-universal
     runs-on: ${{ matrix.os }}
     steps:
       - uses: actions/checkout@v4
@@ -45,29 +49,71 @@ jobs:
             target/release/s85.exe
             packaging/linux/99-rk-s85.rules
           if-no-files-found: ignore
-      # Archives keep the executable bit, unlike the artifact zips above.
-      - name: Package release archive
-        if: startsWith(github.ref, 'refs/tags/v')
+      # ---- Installers and archives (every push; the release job below publishes them for tags) ----
+      - name: Install cargo-packager
+        if: github.event_name == 'push' && runner.os != 'Linux'
+        uses: taiki-e/install-action@v2
+        with:
+          tool: cargo-packager
+      - name: Universal macOS binaries
+        if: github.event_name == 'push' && runner.os == 'macOS'
+        run: |
+          rustup target add x86_64-apple-darwin aarch64-apple-darwin
+          cargo build --release -p s85-gui -p s85-cli --target x86_64-apple-darwin
+          cargo build --release -p s85-gui -p s85-cli --target aarch64-apple-darwin
+          mkdir -p target/universal
+          for b in open-s85 s85; do
+            lipo -create -output "target/universal/$b" \
+              "target/x86_64-apple-darwin/release/$b" "target/aarch64-apple-darwin/release/$b"
+          done
+          lipo -info target/universal/open-s85
+      - name: Installer
+        if: github.event_name == 'push' && runner.os != 'Linux'
         shell: bash
         run: |
-          name="open-s85-${GITHUB_REF_NAME}-${{ matrix.platform }}"
+          prefix="open-s85-${GITHUB_REF_NAME}-${{ matrix.release }}"
+          cd crates/s85-gui
+          if [ "$RUNNER_OS" = macOS ]; then
+            cargo packager --release -f app --binaries-dir ../../target/universal
+            cd ../..
+            # Ad-hoc signature: unsigned downloads are reported as "damaged" on Apple Silicon;
+            # ad-hoc signed ones get the usual "Open Anyway" prompt instead.
+            codesign --force --deep --sign - "target/packager/Open S85.app"
+            mkdir dmg
+            cp -R "target/packager/Open S85.app" dmg/
+            ln -s /Applications dmg/Applications
+            hdiutil create -volname "Open S85" -srcfolder dmg -ov -format UDZO "$prefix.dmg"
+          else
+            cargo packager --release -f nsis
+            mv ../../target/packager/*-setup.exe "../../$prefix-setup.exe"
+          fi
+      # Archives keep the executable bit, unlike the artifact zips above.
+      - name: Package release archive
+        if: github.event_name == 'push'
+        shell: bash
+        run: |
+          name="open-s85-${GITHUB_REF_NAME}-${{ matrix.release }}"
           mkdir "$name"
           cp README.md LICENSE CHANGELOG.md "$name/"
           if [ "$RUNNER_OS" = Windows ]; then
             cp target/release/open-s85.exe target/release/s85.exe "$name/"
             7z a "$name.zip" "$name" > /dev/null
+          elif [ "$RUNNER_OS" = macOS ]; then
+            cp target/universal/open-s85 target/universal/s85 "$name/"
+            tar czf "$name.tar.gz" "$name"
           else
-            cp target/release/open-s85 target/release/s85 "$name/"
-            if [ "$RUNNER_OS" = Linux ]; then cp packaging/linux/99-rk-s85.rules "$name/"; fi
+            cp target/release/open-s85 target/release/s85 packaging/linux/99-rk-s85.rules "$name/"
             tar czf "$name.tar.gz" "$name"
           fi
       - uses: actions/upload-artifact@v4
-        if: startsWith(github.ref, 'refs/tags/v')
+        if: github.event_name == 'push'
         with:
-          name: release-${{ matrix.platform }}
+          name: release-${{ matrix.release }}
           path: |
             open-s85-*.zip
             open-s85-*.tar.gz
+            open-s85-*.dmg
+            open-s85-*-setup.exe
 
   release:
     needs: build

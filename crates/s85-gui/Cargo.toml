@@ -19,3 +19,36 @@ serde_json = "1"
 directories = "6"
 rfd = "0.17"
 chrono = "0.4"
+
+[build-dependencies]
+winresource = "0.1"
+
+# Installers (`cargo packager --release` after `cargo build --release`): .app/.dmg on macOS,
+# a setup .exe on Windows. CI builds them for tagged releases.
+[package.metadata.packager]
+productName = "Open S85"
+identifier = "io.github.sergi-morant.open-s85"
+description = "Unofficial configuration app for the Royal Kludge RK S85 keyboard"
+homepage = "https://github.com/Sergi-Morant/open-s85"
+publisher = "Open S85 contributors"
+authors = ["Open S85 contributors"]
+copyright = "MIT License"
+licenseFile = "../../LICENSE"
+category = "Utility"
+outDir = "../../target/packager"
+binaries = [{ path = "open-s85", main = true }]
+icons = [
+    "assets/icons/32x32.png",
+    "assets/icons/64x64.png",
+    "assets/icons/128x128.png",
+    "assets/icons/256x256.png",
+    "assets/icons/512x512.png",
+    "assets/icons/1024x1024.png",
+    "assets/icon.ico",
+]
+
+[package.metadata.packager.macos]
+minimumSystemVersion = "11.0"
+
+[package.metadata.packager.nsis]
+installerIcon = "assets/icon.ico"
