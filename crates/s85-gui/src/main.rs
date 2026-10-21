@@ -587,7 +587,8 @@ impl App {
                 ui.add_space(4.0);
                 card_header(ui, icons::SWATCHES, "Effects", "How the backlight animates.");
                 egui::ScrollArea::vertical().show(ui, |ui| {
-                    let w = ui.available_width();
+                    // Leave room for the floating scrollbar.
+                    let w = ui.available_width() - 12.0;
                     for &(m, name) in lighting::MODES.iter().chain([(lighting::MODE_OFF, "Off")].iter()) {
                         let (icon, desc) = mode_info(m);
                         if theme::option_tile(ui, icon, name, desc, cfg.mode() == m, w).clicked() {
