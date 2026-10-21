@@ -3,6 +3,8 @@ name: CI
 on:
   push:
     branches: [main]
+    # Pushing a tag such as v0.2.0 also packages the builds and publishes a GitHub release.
+    tags: ["v*"]
   pull_request:
   workflow_dispatch:
 
@@ -13,11 +15,11 @@ jobs:
       matrix:
         include:
           - os: ubuntu-latest
-            artifact: open-s85-linux-x86_64
+            platform: linux-x86_64
           - os: windows-latest
-            artifact: open-s85-windows-x86_64
+            platform: windows-x86_64
           - os: macos-latest
-            artifact: open-s85-macos-arm64
+            platform: macos-arm64
     runs-on: ${{ matrix.os }}
     steps:
       - uses: actions/checkout@v4
@@ -35,7 +37,7 @@ jobs:
       - run: cargo build --workspace --release
       - uses: actions/upload-artifact@v4
         with:
-          name: ${{ matrix.artifact }}
+          name: open-s85-${{ matrix.platform }}
           path: |
             target/release/open-s85
             target/release/open-s85.exe
@@ -43,3 +45,51 @@ jobs:
             target/release/s85.exe
             packaging/linux/99-rk-s85.rules
           if-no-files-found: ignore
+      # Archives keep the executable bit, unlike the artifact zips above.
+      - name: Package release archive
+        if: startsWith(github.ref, 'refs/tags/v')
+        shell: bash
+        run: |
+          name="open-s85-${GITHUB_REF_NAME}-${{ matrix.platform }}"
+          mkdir "$name"
+          cp README.md LICENSE CHANGELOG.md "$name/"
+          if [ "$RUNNER_OS" = Windows ]; then
+            cp target/release/open-s85.exe target/release/s85.exe "$name/"
+            7z a "$name.zip" "$name" > /dev/null
+          else
+            cp target/release/open-s85 target/release/s85 "$name/"
+            if [ "$RUNNER_OS" = Linux ]; then cp packaging/linux/99-rk-s85.rules "$name/"; fi
+            tar czf "$name.tar.gz" "$name"
+          fi
+      - uses: actions/upload-artifact@v4
+        if: startsWith(github.ref, 'refs/tags/v')
+        with:
+          name: release-${{ matrix.platform }}
+          path: |
+            open-s85-*.zip
+            open-s85-*.tar.gz
+
+  release:
+    needs: build
+    if: startsWith(github.ref, 'refs/tags/v')
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: release-*
+          merge-multiple: true
+          path: dist
+      - name: Release notes from CHANGELOG.md
+        run: |
+          ver="${GITHUB_REF_NAME#v}"
+          awk -v v="$ver" '/^## /{ p = index($0, "## " v " ") == 1; next } p' CHANGELOG.md > notes.md
+          sed "s/VERSION/${GITHUB_REF_NAME}/g" packaging/release-notes.md >> notes.md
+      - uses: softprops/action-gh-release@v2
+        with:
+          name: Open S85 ${{ github.ref_name }}
+          body_path: notes.md
+          prerelease: true
+          files: dist/*
