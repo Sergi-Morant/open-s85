@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Render crates/s85-gui/assets/icon.svg into the PNG sizes and the Windows .ico the app uses.
+"""Render crates/s85-gui/assets/icon.svg into the PNG sizes, the Windows .ico and the macOS .icns.
 
 Needs `resvg` on PATH (`cargo install resvg`). The outputs are committed, so this only has to be
 re-run after editing the SVG:
@@ -35,16 +35,24 @@ def write_ico(images: list[tuple[int, bytes]], out: Path) -> None:
     out.write_bytes(header + entries + blobs)
 
 
+def write_icns(pngs: dict[int, bytes], out: Path) -> None:
+    """ICNS with PNG entries: (type, pixel size) for normal and @2x Retina slots."""
+    slots = [("icp4", 16), ("icp5", 32), ("ic11", 32), ("icp6", 64), ("ic12", 64), ("ic07", 128),
+             ("ic08", 256), ("ic13", 256), ("ic09", 512), ("ic14", 512), ("ic10", 1024)]
+    body = b"".join(t.encode() + struct.pack(">I", 8 + len(pngs[s])) + pngs[s] for t, s in slots)
+    out.write_bytes(b"icns" + struct.pack(">I", 8 + len(body)) + body)
+
+
 def main() -> int:
     icons = ASSETS / "icons"
     icons.mkdir(exist_ok=True)
-    for size in PNG_SIZES:
-        render(size, icons / f"{size}x{size}.png")
+    pngs = {size: render(size, icons / f"{size}x{size}.png") for size in PNG_SIZES}
+    write_icns(pngs, ASSETS / "icon.icns")
     tmp = icons / "_tmp.png"
     ico = [(size, render(size, tmp)) for size in ICO_SIZES]
     tmp.unlink()
     write_ico(ico, ASSETS / "icon.ico")
-    print(f"wrote {len(PNG_SIZES)} PNGs to {icons} and {ASSETS / 'icon.ico'}")
+    print(f"wrote {len(PNG_SIZES)} PNGs to {icons}, icon.ico and icon.icns")
     return 0
 
 

@@ -3025,7 +3025,7 @@ checksum = "cf54715a573b99ac80df0bc206da022bcd442c974952c7b9720069370852e21f"
 
 [[package]]
 name = "s85-cli"
-version = "0.3.0"
+version = "0.2.1"
 dependencies = [
  "anyhow",
  "chrono",
@@ -3035,7 +3035,7 @@ dependencies = [
 
 [[package]]
 name = "s85-gui"
-version = "0.3.0"
+version = "0.2.1"
 dependencies = [
  "anyhow",
  "chrono",
@@ -3050,7 +3050,7 @@ dependencies = [
 
 [[package]]
 name = "s85-protocol"
-version = "0.3.0"
+version = "0.2.1"
 dependencies = [
  "hidapi",
  "image",

@@ -37,15 +37,8 @@ licenseFile = "../../LICENSE"
 category = "Utility"
 outDir = "../../target/packager"
 binaries = [{ path = "open-s85", main = true }]
-icons = [
-    "assets/icons/32x32.png",
-    "assets/icons/64x64.png",
-    "assets/icons/128x128.png",
-    "assets/icons/256x256.png",
-    "assets/icons/512x512.png",
-    "assets/icons/1024x1024.png",
-    "assets/icon.ico",
-]
+# The .icns is used as-is on macOS; the Windows installer and .exe use assets/icon.ico.
+icons = ["assets/icon.icns"]
 
 [package.metadata.packager.macos]
 minimumSystemVersion = "11.0"

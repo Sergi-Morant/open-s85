@@ -3,7 +3,7 @@ resolver = "2"
 members = ["crates/s85-protocol", "crates/s85-cli", "crates/s85-gui"]
 
 [workspace.package]
-version = "0.3.0"
+version = "0.2.1"
 edition = "2021"
 license = "MIT"
 repository = "https://github.com/Sergi-Morant/open-s85"

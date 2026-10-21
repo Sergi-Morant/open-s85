@@ -1,6 +1,6 @@
 # Changelog
 
-## 0.3.0 — 2026-10-21
+## 0.2.1 — 2026-10-21
 
 Installers and an app icon. The app itself works the same as 0.2.0.
 

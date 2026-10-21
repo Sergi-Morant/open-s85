@@ -76,11 +76,14 @@ jobs:
           if [ "$RUNNER_OS" = macOS ]; then
             cargo packager --release -f app --binaries-dir ../../target/universal
             cd ../..
+            ls target/packager
+            app="$(ls -d target/packager/*.app | head -n 1)"
             # Ad-hoc signature: unsigned downloads are reported as "damaged" on Apple Silicon;
             # ad-hoc signed ones get the usual "Open Anyway" prompt instead.
-            codesign --force --deep --sign - "target/packager/Open S85.app"
+            codesign --force --deep --sign - "$app"
+            codesign --verify --verbose "$app"
             mkdir dmg
-            cp -R "target/packager/Open S85.app" dmg/
+            cp -R "$app" dmg/
             ln -s /Applications dmg/Applications
             hdiutil create -volname "Open S85" -srcfolder dmg -ov -format UDZO "$prefix.dmg"
           else
