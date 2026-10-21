@@ -4,10 +4,10 @@
 |---|---|---|
 | Windows x86-64 | `open-s85-VERSION-windows-x86_64-setup.exe` | `open-s85-VERSION-windows-x86_64.zip` |
 | macOS (Apple Silicon + Intel) | `open-s85-VERSION-macos-universal.dmg` | `open-s85-VERSION-macos-universal.tar.gz` |
-| Linux x86-64 (glibc ≥ 2.39, e.g. Ubuntu 24.04+) | — | `open-s85-VERSION-linux-x86_64.tar.gz` |
+| Linux x86-64 (glibc ≥ 2.39, e.g. Ubuntu 24.04+) | `install.sh` inside the archive | `open-s85-VERSION-linux-x86_64.tar.gz` |
 
 The archives contain `open-s85` (desktop app), `s85` (CLI), README, CHANGELOG and LICENSE; the
-Linux one also has the udev rule.
+Linux one also has the udev rule, the app icon, a `.desktop` entry and `install.sh`.
 
 ### Notes
 - Connect the keyboard **by USB cable** and close the official RK app first.

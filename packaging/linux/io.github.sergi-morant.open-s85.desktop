@@ -1,0 +1,9 @@
+[Desktop Entry]
+Type=Application
+Name=Open S85
+Comment=Unofficial configuration app for the Royal Kludge RK S85 keyboard
+Exec=open-s85
+Icon=io.github.sergi-morant.open-s85
+Terminal=false
+Categories=Settings;HardwareSettings;
+Keywords=keyboard;RGB;Royal Kludge;RK;

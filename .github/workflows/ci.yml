@@ -105,7 +105,10 @@ jobs:
             cp target/universal/open-s85 target/universal/s85 "$name/"
             tar czf "$name.tar.gz" "$name"
           else
-            cp target/release/open-s85 target/release/s85 packaging/linux/70-rk-s85.rules "$name/"
+            cp target/release/open-s85 target/release/s85 packaging/linux/70-rk-s85.rules \
+              packaging/linux/install.sh packaging/linux/io.github.sergi-morant.open-s85.desktop "$name/"
+            mkdir "$name/icons"
+            cp crates/s85-gui/assets/icons/*.png "$name/icons/"
             tar czf "$name.tar.gz" "$name"
           fi
       - uses: actions/upload-artifact@v4

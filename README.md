@@ -53,6 +53,9 @@ polls the keyboard and will also re-send its own saved key mapping.
 
 ### Linux
 
+From the extracted `.tar.gz`, `./install.sh` installs `open-s85` and `s85` to `~/.local/bin` and
+adds the app with its icon to your applications menu (`./install.sh --uninstall` removes them).
+
 Allow non-root access, then replug the keyboard:
 
 ```sh

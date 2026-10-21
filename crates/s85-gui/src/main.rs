@@ -29,6 +29,8 @@ const IMAGE_EXTS: [&str; 6] = ["gif", "png", "jpg", "jpeg", "bmp", "webp"];
 fn main() -> eframe::Result<()> {
     let mut viewport = egui::ViewportBuilder::default()
         .with_title("Open S85")
+        // Linux desktops (Wayland especially) take the window icon from the .desktop file with this name.
+        .with_app_id("io.github.sergi-morant.open-s85")
         .with_inner_size([1280.0, 820.0])
         .with_min_inner_size([980.0, 640.0])
         .with_drag_and_drop(true);

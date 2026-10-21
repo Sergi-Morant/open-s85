@@ -2,12 +2,16 @@
 
 ## 0.2.2 — 2026-10-21
 
-Linux fix. The app itself is unchanged.
+Linux fixes. The app is otherwise unchanged.
 
 * **Linux:** the udev rule is now `70-rk-s85.rules` (was `99-rk-s85.rules`). systemd grants
   `uaccess` permissions in `73-seat-late.rules`, so the old file's tag came too late and the app
   failed with "Permission denied" unless run as root. If you installed the old rule, delete it
   and install the new one (see README).
+* **Linux:** the app icon now appears in the applications menu, taskbar and window title, like on
+  Windows and macOS. The download includes the icon, a `.desktop` entry and an `install.sh` that
+  sets them up for the current user. The window now reports the app ID
+  `io.github.sergi-morant.open-s85`, which Wayland desktops use to find the icon.
 
 ## 0.2.1 — 2026-10-21
 
