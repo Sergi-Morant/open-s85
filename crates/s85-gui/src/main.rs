@@ -1,5 +1,6 @@
 #![cfg_attr(not(debug_assertions), windows_subsystem = "windows")]
 
+mod color_panel;
 mod icons;
 mod keyboard_view;
 mod profile;
@@ -681,51 +682,7 @@ impl App {
                                 cfg.set_color(m, if mix { lighting::COLOR_MIX } else { 0 });
                             }
                             ui.add_space(4.0);
-                            let mut new_rgb = None;
-                            ui.add_enabled_ui(!mix, |ui| {
-                                ui.horizontal(|ui| {
-                                    let mut c = Color32::from_rgb(rgb[0], rgb[1], rgb[2]);
-                                    if egui::color_picker::color_edit_button_srgba(
-                                        ui,
-                                        &mut c,
-                                        egui::color_picker::Alpha::Opaque,
-                                    )
-                                    .on_hover_text("Pick any colour")
-                                    .changed()
-                                    {
-                                        new_rgb = Some([c.r(), c.g(), c.b()]);
-                                    }
-                                    ui.label(
-                                        RichText::new(format!("#{:02X}{:02X}{:02X}", rgb[0], rgb[1], rgb[2]))
-                                            .monospace()
-                                            .color(theme::TEXT_MUTED),
-                                    );
-                                });
-                                ui.add_space(4.0);
-                                ui.label(RichText::new("Presets").size(12.0).color(theme::TEXT_MUTED));
-                                ui.horizontal_wrapped(|ui| {
-                                    for p in lighting::DEFAULT_PALETTE {
-                                        let (r, resp) = ui.allocate_exact_size(Vec2::splat(28.0), Sense::click());
-                                        let active = !mix && p == rgb;
-                                        ui.painter().rect_filled(
-                                            r,
-                                            CornerRadius::same(14),
-                                            Color32::from_rgb(p[0], p[1], p[2]),
-                                        );
-                                        if active || resp.hovered() {
-                                            ui.painter().rect_stroke(
-                                                r.expand(2.0),
-                                                CornerRadius::same(16),
-                                                Stroke::new(2.0, Color32::WHITE),
-                                                egui::StrokeKind::Inside,
-                                            );
-                                        }
-                                        if resp.on_hover_cursor(egui::CursorIcon::PointingHand).clicked() {
-                                            new_rgb = Some(p);
-                                        }
-                                    }
-                                });
-                            });
+                            let new_rgb = ui.add_enabled_ui(!mix, |ui| color_panel::show(ui, rgb)).inner;
                             if let Some(v) = new_rgb {
                                 // Like the official app: the chosen colour goes into palette slot 0 and is selected.
                                 pal.0[m as usize][0] = v;
